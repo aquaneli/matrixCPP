@@ -377,8 +377,7 @@ void Matrix::SetCols(int cols) {
   }
 }
 
-void Matrix::MatrixСhange(const Matrix& tmp, const int rows,
-                             const int cols) {
+void Matrix::MatrixСhange(const Matrix& tmp, const int rows, const int cols) {
   rows_ = rows;
   cols_ = cols;
   CreateMatrix();
@@ -390,8 +389,7 @@ void Matrix::MatrixСhange(const Matrix& tmp, const int rows,
 }
 
 /* скопировать данные из матрицы в текущую матрицу*/
-void Matrix::CopyMatrix(const Matrix& tmp, const int rows,
-                           const int cols) {
+void Matrix::CopyMatrix(const Matrix& tmp, const int rows, const int cols) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       matrix_[i][j] = tmp.matrix_[i][j];
