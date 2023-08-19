@@ -3,8 +3,8 @@
 #include "matrix_oop.h"
 
 TEST(Constructor, test_1) {
-  S21Matrix a;
-  S21Matrix b(a);
+  Matrix a;
+  Matrix b(a);
 
   b.SetRows(1);
   b.SetCols(2);
@@ -55,7 +55,7 @@ TEST(Constructor, test_1) {
 }
 
 TEST(Constructor, test_2) {
-  S21Matrix a(0, -1);
+  Matrix a(0, -1);
 
   a.SetRows(5);
   a.SetCols(5);
@@ -93,7 +93,7 @@ TEST(Constructor, test_2) {
   EXPECT_EQ(a.GetRows(), 5);
   EXPECT_EQ(a.GetCols(), 5);
 
-  S21Matrix b = a;
+  Matrix b = a;
 
   for (int i = 0; i < a.GetRows(); i++) {
     for (int j = 0; j < a.GetCols(); j++) {
@@ -103,14 +103,14 @@ TEST(Constructor, test_2) {
 }
 
 TEST(Constructor, test_3) {
-  S21Matrix a = S21Matrix(1, 1);
-  S21Matrix b = a;
+  Matrix a = Matrix(1, 1);
+  Matrix b = a;
   b.SetCols(a.GetCols() + 1);
   EXPECT_EQ(a.GetCols() + 1, b.GetCols());
 }
 
 TEST(Constructor, test_4) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -123,7 +123,7 @@ TEST(Constructor, test_4) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(-1, 0);
+  Matrix b(-1, 0);
 
   b = a;
 
@@ -131,7 +131,7 @@ TEST(Constructor, test_4) {
 }
 
 TEST(Constructor, test_5) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -144,9 +144,9 @@ TEST(Constructor, test_5) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix tmp = a;
+  Matrix tmp = a;
 
-  S21Matrix b(std::move(a));
+  Matrix b(std::move(a));
 
   EXPECT_THROW(b(5, 0), std::length_error);
 
@@ -154,7 +154,7 @@ TEST(Constructor, test_5) {
 }
 
 TEST(Eq, test_6) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -167,14 +167,14 @@ TEST(Eq, test_6) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix tmp = a;
-  S21Matrix b(std::move(a));
+  Matrix tmp = a;
+  Matrix b(std::move(a));
   EXPECT_EQ(tmp.GetCols(), b.GetCols());
   EXPECT_EQ(tmp.EqMatrix(b), true);
 }
 
 TEST(Eq, test_7) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -187,15 +187,15 @@ TEST(Eq, test_7) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix tmp = a;
-  S21Matrix b(std::move(a));
+  Matrix tmp = a;
+  Matrix b(std::move(a));
   b(1, 2) = 6.000003;
   EXPECT_EQ(tmp.GetCols(), b.GetCols());
   EXPECT_EQ(tmp.EqMatrix(b), false);
 }
 
 TEST(Eq, test_8) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -208,8 +208,8 @@ TEST(Eq, test_8) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix tmp = a;
-  S21Matrix b(std::move(a));
+  Matrix tmp = a;
+  Matrix b(std::move(a));
   EXPECT_EQ(tmp.GetCols(), b.GetCols());
 
   b.SetRows(5);
@@ -221,7 +221,7 @@ TEST(Eq, test_8) {
 }
 
 TEST(SumMatrix, test_9) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -234,7 +234,7 @@ TEST(SumMatrix, test_9) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b.SumMatrix(a);
 
   for (int i = 0; i < a.GetRows(); i++) {
@@ -245,7 +245,7 @@ TEST(SumMatrix, test_9) {
 }
 
 TEST(SumMatrix, test_10) {
-  S21Matrix a(3, 4);
+  Matrix a(3, 4);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -258,7 +258,7 @@ TEST(SumMatrix, test_10) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b.SetRows(5);
 
   EXPECT_THROW(b.SumMatrix(a), std::length_error);
@@ -275,8 +275,8 @@ TEST(SumMatrix, test_10) {
 }
 
 TEST(SumMatrix, test_11) {
-  S21Matrix a(1, 15);
-  S21Matrix b(1, 15);
+  Matrix a(1, 15);
+  Matrix b(1, 15);
   for (int i = 0; i < a.GetRows(); i++) {
     for (int j = 0; j < a.GetCols(); j++) {
       a(i, j) = i + j * 1.73;
@@ -299,7 +299,7 @@ TEST(SumMatrix, test_11) {
 }
 
 TEST(SubMatrix, test_12) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -312,7 +312,7 @@ TEST(SubMatrix, test_12) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b.SubMatrix(a);
 
   for (int i = 0; i < a.GetRows(); i++) {
@@ -323,7 +323,7 @@ TEST(SubMatrix, test_12) {
 }
 
 TEST(SumMatrix, test_13) {
-  S21Matrix a(3, 4);
+  Matrix a(3, 4);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -336,7 +336,7 @@ TEST(SumMatrix, test_13) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b.SetRows(5);
 
   EXPECT_THROW(b.SubMatrix(a), std::length_error);
@@ -353,7 +353,7 @@ TEST(SumMatrix, test_13) {
 }
 
 TEST(SumMatrix, test_14) {
-  S21Matrix a(3, 4);
+  Matrix a(3, 4);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -366,7 +366,7 @@ TEST(SumMatrix, test_14) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b.SetRows(5);
 
   EXPECT_THROW(b.SubMatrix(a), std::length_error);
@@ -383,7 +383,7 @@ TEST(SumMatrix, test_14) {
 }
 
 TEST(MulNumber, test_15) {
-  S21Matrix a(3, 4);
+  Matrix a(3, 4);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -396,7 +396,7 @@ TEST(MulNumber, test_15) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
 
   b.SetRows(0);
   EXPECT_THROW(b.MulNumber(3), std::length_error);
@@ -412,7 +412,7 @@ TEST(MulNumber, test_15) {
 }
 
 TEST(MulMatrix, test_16) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -425,7 +425,7 @@ TEST(MulMatrix, test_16) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
 
   b.MulMatrix(a);
 
@@ -441,12 +441,12 @@ TEST(MulMatrix, test_16) {
 }
 
 TEST(MulMatrix, test_17) {
-  S21Matrix a(1, 3);
+  Matrix a(1, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
 
-  S21Matrix b(3, 1);
+  Matrix b(3, 1);
   b(0, 0) = 2.0;
   b(1, 0) = 11.0;
   b(2, 0) = 12.0;
@@ -457,12 +457,12 @@ TEST(MulMatrix, test_17) {
 }
 
 TEST(MulMatrix, test_18) {
-  S21Matrix a(1, 3);
+  Matrix a(1, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
 
-  S21Matrix b(3, 1);
+  Matrix b(3, 1);
   b(0, 0) = 2.0;
   b(1, 0) = 11.0;
   b(2, 0) = 12.0;
@@ -473,9 +473,9 @@ TEST(MulMatrix, test_18) {
 }
 
 TEST(MulMatrix, test_19) {
-  S21Matrix a(4, 3);
-  S21Matrix b(4, 3);
-  S21Matrix result_full(4, 3);
+  Matrix a(4, 3);
+  Matrix b(4, 3);
+  Matrix result_full(4, 3);
   double res = 5.123f;
 
   for (int i = 0; i < a.GetRows(); i++) {
@@ -498,11 +498,11 @@ TEST(MulMatrix, test_19) {
 }
 
 TEST(Transpose, test_20) {
-  S21Matrix a(3, 2);
-  S21Matrix b(2, 3);
-  S21Matrix result_full(3, 3);
-  S21Matrix result1;
-  S21Matrix result2;
+  Matrix a(3, 2);
+  Matrix b(2, 3);
+  Matrix result_full(3, 3);
+  Matrix result1;
+  Matrix result2;
 
   a(0, 0) = 0;
   a(0, 1) = 1;
@@ -535,8 +535,8 @@ TEST(Transpose, test_20) {
 }
 
 TEST(Transpose, test_21) {
-  S21Matrix a(3, 5);
-  S21Matrix result;
+  Matrix a(3, 5);
+  Matrix result;
 
   a(0, 0) = 1;
   a(0, 1) = 2;
@@ -579,14 +579,14 @@ TEST(Transpose, test_21) {
 }
 
 TEST(Transpose, test_22) {
-  S21Matrix a(0, 5);
+  Matrix a(0, 5);
   EXPECT_THROW(a.Transpose(), std::length_error);
 }
 
 TEST(Transpose, test_23) {
-  S21Matrix a(2, 2);
-  S21Matrix b(0, 5);
-  S21Matrix result(2, 2);
+  Matrix a(2, 2);
+  Matrix b(0, 5);
+  Matrix result(2, 2);
 
   a(0, 0) = 1;
   a(0, 1) = 2;
@@ -608,9 +608,9 @@ TEST(Transpose, test_23) {
 }
 
 TEST(Transpose, test_24) {
-  S21Matrix a(2, 1);
-  S21Matrix b(0, 5);
-  S21Matrix result(2, 2);
+  Matrix a(2, 1);
+  Matrix b(0, 5);
+  Matrix result(2, 2);
 
   a(0, 0) = 1;
   a(1, 0) = 3;
@@ -624,9 +624,9 @@ TEST(Transpose, test_24) {
 }
 
 TEST(Transpose, test_25) {
-  S21Matrix a(5, 5);
-  S21Matrix b(0, 5);
-  S21Matrix result(5, 5);
+  Matrix a(5, 5);
+  Matrix b(0, 5);
+  Matrix result(5, 5);
 
   double res1 = 0.0;
   double res2 = 0.0;
@@ -702,7 +702,7 @@ TEST(Transpose, test_25) {
 }
 
 TEST(Determinant, test_26) {
-  S21Matrix a(1, 2);
+  Matrix a(1, 2);
   EXPECT_THROW(a.Determinant(), std::length_error);
   a.SetCols(1);
   a(0, 0) = 1.0;
@@ -710,7 +710,7 @@ TEST(Determinant, test_26) {
 }
 
 TEST(operator, test_26) {
-  S21Matrix a(1, 2);
+  Matrix a(1, 2);
   EXPECT_THROW(a.Determinant(), std::length_error);
   a.SetCols(1);
   a(0, 0) = 1.0;
@@ -718,9 +718,9 @@ TEST(operator, test_26) {
 }
 
 TEST(InverseMatrix, test_27) {
-  S21Matrix a(3, 3);
-  S21Matrix b(3, 3);
-  S21Matrix result(3, 3);
+  Matrix a(3, 3);
+  Matrix b(3, 3);
+  Matrix result(3, 3);
 
   a(0, 0) = 2.0;
   a(0, 1) = 5.0;
@@ -751,9 +751,9 @@ TEST(InverseMatrix, test_27) {
 }
 
 TEST(InverseMatrix, test_28) {
-  S21Matrix a(1, 1);
-  S21Matrix b(1, 1);
-  S21Matrix result(1, 1);
+  Matrix a(1, 1);
+  Matrix b(1, 1);
+  Matrix result(1, 1);
 
   a(0, 0) = 2.0;
   b(0, 0) = 0.5;
@@ -764,7 +764,7 @@ TEST(InverseMatrix, test_28) {
 }
 
 TEST(InverseMatrix, test_29) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 1.0;
   a(0, 1) = 2.0;
   a(0, 2) = 3.0;
@@ -775,12 +775,12 @@ TEST(InverseMatrix, test_29) {
   a(2, 1) = 8.0;
   a(2, 2) = 9.0;
   EXPECT_THROW(a.InverseMatrix(), std::length_error);
-  S21Matrix b(0, 0);
+  Matrix b(0, 0);
   EXPECT_THROW(b.InverseMatrix(), std::length_error);
 }
 
 TEST(SumOperator, test_30) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -793,7 +793,7 @@ TEST(SumOperator, test_30) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b = b + a;
 
   for (int i = 0; i < a.GetRows(); i++) {
@@ -813,7 +813,7 @@ TEST(SumOperator, test_30) {
 }
 
 TEST(SubOperator, test_31) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -826,7 +826,7 @@ TEST(SubOperator, test_31) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b = b - a;
 
   for (int i = 0; i < a.GetRows(); i++) {
@@ -846,7 +846,7 @@ TEST(SubOperator, test_31) {
 }
 
 TEST(MulNumOperator, test_32) {
-  S21Matrix a(3, 4);
+  Matrix a(3, 4);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -859,8 +859,8 @@ TEST(MulNumOperator, test_32) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
-  S21Matrix tmp = b;
+  Matrix b(a);
+  Matrix tmp = b;
   b = b * 3;
   for (int i = 0; i < a.GetRows(); i++) {
     for (int j = 0; j < a.GetCols(); j++) {
@@ -886,7 +886,7 @@ TEST(MulNumOperator, test_32) {
 }
 
 TEST(EqOperator, test_33) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -899,13 +899,13 @@ TEST(EqOperator, test_33) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   EXPECT_EQ(a.GetCols(), b.GetCols());
   EXPECT_EQ(b == a, true);
 }
 
 TEST(EqOperator, test_34) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -918,7 +918,7 @@ TEST(EqOperator, test_34) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  S21Matrix b(a);
+  Matrix b(a);
   b(0, 0) = a(0, 0) - 1.00001;
   b(1, 2) = a(1, 2) - 0.00001;
   b(2, 2) = a(2, 2) + 0.00001;
@@ -927,7 +927,7 @@ TEST(EqOperator, test_34) {
 }
 
 TEST(BrktOperator, test_35) {
-  S21Matrix a(3, 3);
+  Matrix a(3, 3);
   a(0, 0) = 2.0;
   a(0, 1) = 2.0;
   a(0, 2) = 4.0;
@@ -940,7 +940,7 @@ TEST(BrktOperator, test_35) {
   a(2, 1) = 5.0;
   a(2, 2) = 0.0;
 
-  const S21Matrix b(a);
+  const Matrix b(a);
 
   for (int i = 0; i < a.GetRows(); i++) {
     for (int j = 0; j < a.GetCols(); j++) {

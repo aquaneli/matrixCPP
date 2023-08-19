@@ -2,10 +2,10 @@
 
 /* Базовый конструктор, инициализирующий матрицу некоторой заранее заданной
  * размерностью */
-S21Matrix::S21Matrix() : rows_(0), cols_(0), matrix_(nullptr) {}
+Matrix::Matrix() : rows_(0), cols_(0), matrix_(nullptr) {}
 
 /* Параметризированный конструктор с количеством строк и столбцов */
-S21Matrix::S21Matrix(const int rows, const int cols)
+Matrix::Matrix(const int rows, const int cols)
     : rows_(rows), cols_(cols), matrix_(nullptr) {
   if (rows > 0 && cols > 0) {
     CreateMatrix();
@@ -13,7 +13,7 @@ S21Matrix::S21Matrix(const int rows, const int cols)
 }
 
 /* Конструктор копирования */
-S21Matrix::S21Matrix(const S21Matrix& other)
+Matrix::Matrix(const Matrix& other)
     : rows_(other.rows_), cols_(other.cols_), matrix_(nullptr) {
   if (other.matrix_) {
     CreateMatrix();
@@ -22,7 +22,7 @@ S21Matrix::S21Matrix(const S21Matrix& other)
 }
 
 /* Конструктор переноса */
-S21Matrix::S21Matrix(S21Matrix&& other) noexcept
+Matrix::Matrix(Matrix&& other) noexcept
     : rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_) {
   other.rows_ = 0;
   other.cols_ = 0;
@@ -30,10 +30,10 @@ S21Matrix::S21Matrix(S21Matrix&& other) noexcept
 }
 
 /* Деструктор */
-S21Matrix::~S21Matrix() { ClearMatrix(); }
+Matrix::~Matrix() { ClearMatrix(); }
 
 /* Проверяет матрицы на равенство между собой */
-bool S21Matrix::EqMatrix(const S21Matrix& other) const {
+bool Matrix::EqMatrix(const Matrix& other) const {
   bool res = true;
   if (rows_ == other.rows_ && cols_ == other.cols_ && matrix_ &&
       other.matrix_) {
@@ -52,7 +52,7 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) const {
 }
 
 /* Прибавляет вторую матрицы к текущей */
-void S21Matrix::SumMatrix(const S21Matrix& other) {
+void Matrix::SumMatrix(const Matrix& other) {
   if ((rows_ != other.rows_ || cols_ != other.cols_) || !matrix_ ||
       !other.matrix_) {
     throw std::length_error("different matrix dimensions or no matrix exists");
@@ -61,7 +61,7 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 }
 
 /* Вычитает из текущей матрицы другую */
-void S21Matrix::SubMatrix(const S21Matrix& other) {
+void Matrix::SubMatrix(const Matrix& other) {
   if ((rows_ != other.rows_ || cols_ != other.cols_) || !matrix_ ||
       !other.matrix_) {
     throw std::length_error("different matrix dimensions or no matrix exists");
@@ -70,7 +70,7 @@ void S21Matrix::SubMatrix(const S21Matrix& other) {
 }
 
 /* Сложение или вычитание */
-void S21Matrix::SumSubFunc(const S21Matrix& other, const int code) {
+void Matrix::SumSubFunc(const Matrix& other, const int code) {
   if (code == 0) {
     for (int i = 0; i < other.rows_; i++) {
       for (int j = 0; j < other.cols_; j++) {
@@ -87,7 +87,7 @@ void S21Matrix::SumSubFunc(const S21Matrix& other, const int code) {
 }
 
 /* Умножает текущую матрицу на число */
-void S21Matrix::MulNumber(const double num) {
+void Matrix::MulNumber(const double num) {
   if (!matrix_) {
     throw std::length_error("no matrix exists");
   }
@@ -99,14 +99,14 @@ void S21Matrix::MulNumber(const double num) {
 }
 
 /* Умножает текущую матрицу на вторую */
-void S21Matrix::MulMatrix(const S21Matrix& other) {
+void Matrix::MulMatrix(const Matrix& other) {
   if (cols_ != other.rows_ || !matrix_ || !other.matrix_) {
     throw std::length_error(
         "the number of columns of the first matrix is not equal to the number "
         "of rows of the second matrix or no matrix exists");
   }
   double sum = 0.0;
-  S21Matrix tmp(std::move(*this));
+  Matrix tmp(std::move(*this));
   rows_ = tmp.rows_;
   cols_ = other.cols_;
 
@@ -122,11 +122,11 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 }
 
 /* Создает новую транспонированную матрицу из текущей и возвращает ее */
-S21Matrix S21Matrix::Transpose() const {
+Matrix Matrix::Transpose() const {
   if (!matrix_) {
     throw std::length_error("no matrix exists");
   }
-  S21Matrix tmp(cols_, rows_);
+  Matrix tmp(cols_, rows_);
   for (int i = 0; i < tmp.rows_; i++) {
     for (int j = 0; j < tmp.cols_; j++) {
       tmp.matrix_[i][j] = matrix_[j][i];
@@ -138,11 +138,11 @@ S21Matrix S21Matrix::Transpose() const {
 
 /* Вычисляет матрицу алгебраических дополнений текущей
 матрицы и возвращает ее */
-S21Matrix S21Matrix::CalcComplements() const {
+Matrix Matrix::CalcComplements() const {
   if (rows_ != cols_ || !matrix_) {
     throw std::length_error("the matrix is not square or no matrix exists");
   }
-  S21Matrix res(rows_, cols_);
+  Matrix res(rows_, cols_);
   if (res.rows_ > 1 && res.cols_ > 1) {
     for (int i = 0; i < res.rows_; i++)
       for (int j = 0; j < res.cols_; j++)
@@ -155,9 +155,9 @@ S21Matrix S21Matrix::CalcComplements() const {
 }
 
 /* Поиск минора*/
-double S21Matrix::MinorSearch(const int& i, const int& j) const {
+double Matrix::MinorSearch(const int& i, const int& j) const {
   double res = 0.0;
-  S21Matrix minor(MatrixDecr(i, j));
+  Matrix minor(MatrixDecr(i, j));
   if (minor.rows_ > 2) {
     for (int m = 0, k = 0; m < minor.cols_; m++) {
       res += minor.MinorSearch(k, m) * pow(-1, m) * minor.matrix_[0][m];
@@ -172,8 +172,8 @@ double S21Matrix::MinorSearch(const int& i, const int& j) const {
 }
 
 /* Создание матрицы меньшего размера */
-S21Matrix S21Matrix::MatrixDecr(const int& i, const int& j) const {
-  S21Matrix minor(rows_ - 1, cols_ - 1);
+Matrix Matrix::MatrixDecr(const int& i, const int& j) const {
+  Matrix minor(rows_ - 1, cols_ - 1);
   for (int rows = 0, rows_minor = 0, cols_minor = 0; rows < rows_; rows++) {
     for (int cols = 0; cols < cols_; cols++) {
       if (i != rows && j != cols) {
@@ -191,12 +191,12 @@ S21Matrix S21Matrix::MatrixDecr(const int& i, const int& j) const {
 }
 
 /* Вычисляет и возвращает определитель текущей матрицы */
-double S21Matrix::Determinant() const {
+double Matrix::Determinant() const {
   if (rows_ != cols_ || !matrix_) {
     throw std::length_error("the matrix is not square or no matrix exists");
   }
   double res = 0.0f;
-  S21Matrix det(CalcComplements());
+  Matrix det(CalcComplements());
   if (rows_ > 1 && cols_ > 1) {
     for (int j = 0; j < det.cols_; j++)
       res += det.matrix_[0][j] * matrix_[0][j];
@@ -208,12 +208,12 @@ double S21Matrix::Determinant() const {
 }
 
 /* Вычисляет и возвращает обратную матрицу */
-S21Matrix S21Matrix::InverseMatrix() const {
+Matrix Matrix::InverseMatrix() const {
   if (!matrix_) {
     throw std::length_error("no matrix exists");
   }
   double det_res = 0.0f;
-  S21Matrix inverse(*this);
+  Matrix inverse(*this);
   det_res = inverse.Determinant();
   if (det_res == 0.0) {
     throw std::length_error("matrix determinant is 0");
@@ -230,70 +230,70 @@ S21Matrix S21Matrix::InverseMatrix() const {
 }
 
 /* Сложение двух матриц */
-S21Matrix S21Matrix::operator+(const S21Matrix& other) {
-  S21Matrix tmp(*this);
+Matrix Matrix::operator+(const Matrix& other) {
+  Matrix tmp(*this);
   tmp += other;
   return tmp;
 }
 
 /* Присвоение сложения */
-S21Matrix& S21Matrix::operator+=(const S21Matrix& other) {
+Matrix& Matrix::operator+=(const Matrix& other) {
   SumMatrix(other);
   return *this;
 }
 
 /* Вычитание одной матрицы из другой */
-S21Matrix S21Matrix::operator-(const S21Matrix& other) {
-  S21Matrix tmp(*this);
+Matrix Matrix::operator-(const Matrix& other) {
+  Matrix tmp(*this);
   tmp -= other;
   return tmp;
 }
 
 /* Присвоение разности */
-S21Matrix& S21Matrix::operator-=(const S21Matrix& other) {
+Matrix& Matrix::operator-=(const Matrix& other) {
   SubMatrix(other);
   return *this;
 }
 
 /* Умножение матриц */
-S21Matrix S21Matrix::operator*(const S21Matrix& other) {
-  S21Matrix tmp(*this);
+Matrix Matrix::operator*(const Matrix& other) {
+  Matrix tmp(*this);
   tmp *= other;
   return tmp;
 }
 
 /* Умножение матрицы на число */
-S21Matrix S21Matrix::operator*(const double other) {
-  S21Matrix tmp(*this);
+Matrix Matrix::operator*(const double other) {
+  Matrix tmp(*this);
   tmp *= other;
   return tmp;
 }
 
 /* Умножение числа на матрицу */
-S21Matrix operator*(const double other, S21Matrix& tmp) {
+Matrix operator*(const double other, Matrix& tmp) {
   tmp *= other;
   return tmp;
 }
 
 /* Присвоение умножения матриц*/
-S21Matrix& S21Matrix::operator*=(const S21Matrix& other) {
+Matrix& Matrix::operator*=(const Matrix& other) {
   MulMatrix(other);
   return *this;
 }
 
 /* Присвоение умножения матрицы на число*/
-S21Matrix& S21Matrix::operator*=(const double other) {
+Matrix& Matrix::operator*=(const double other) {
   MulNumber(other);
   return *this;
 }
 
 /* Проверка на равенство матриц */
-bool S21Matrix::operator==(const S21Matrix& other) { return EqMatrix(other); }
+bool Matrix::operator==(const Matrix& other) { return EqMatrix(other); }
 
 /* Оператор присваивания копированием */
-S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
+Matrix& Matrix::operator=(const Matrix& other) {
   if (this != &other) {
-    this->~S21Matrix();
+    this->~Matrix();
     rows_ = other.rows_;
     cols_ = other.cols_;
     CreateMatrix();
@@ -303,9 +303,9 @@ S21Matrix& S21Matrix::operator=(const S21Matrix& other) {
 }
 
 /* Оператор присваивания перемещением */
-S21Matrix& S21Matrix::operator=(S21Matrix&& other) noexcept {
+Matrix& Matrix::operator=(Matrix&& other) noexcept {
   if (this != &other) {
-    this->~S21Matrix();
+    this->~Matrix();
     std::swap(rows_, other.rows_);
     std::swap(cols_, other.cols_);
     std::swap(matrix_, other.matrix_);
@@ -314,7 +314,7 @@ S21Matrix& S21Matrix::operator=(S21Matrix&& other) noexcept {
 }
 
 /* Индексация по элементам матрицы */
-double& S21Matrix::operator()(int i, int j) {
+double& Matrix::operator()(int i, int j) {
   if (rows_ <= i || cols_ <= j || i < 0 || j < 0 || !matrix_) {
     throw std::length_error("index is outside the matrix or no matrix exists");
   }
@@ -322,7 +322,7 @@ double& S21Matrix::operator()(int i, int j) {
 }
 
 /* Индексация по элементам матрицы с константными значением */
-double S21Matrix::operator()(int i, int j) const {
+double Matrix::operator()(int i, int j) const {
   if (rows_ <= i || cols_ <= j || i < 0 || j < 0 || !matrix_) {
     throw std::length_error("index is outside the matrix or no matrix exists");
   }
@@ -331,7 +331,7 @@ double S21Matrix::operator()(int i, int j) const {
 }
 
 /* Создание новой матрицы */
-void S21Matrix::CreateMatrix() {
+void Matrix::CreateMatrix() {
   if (rows_ > 0 && cols_ > 0) {
     matrix_ = new double* [rows_] {};
     for (int i = 0; i < rows_; i++) {
@@ -341,7 +341,7 @@ void S21Matrix::CreateMatrix() {
 }
 
 /* Очистка матрицы */
-void S21Matrix::ClearMatrix() {
+void Matrix::ClearMatrix() {
   if (matrix_) {
     for (int i = 0; i < rows_; i++) {
       if (matrix_[i]) {
@@ -356,28 +356,28 @@ void S21Matrix::ClearMatrix() {
 }
 
 /* Вернуть количество строк */
-int S21Matrix::GetRows() const { return rows_; }
+int Matrix::GetRows() const { return rows_; }
 
 /* Вернуть количество столбцов */
-int S21Matrix::GetCols() const { return cols_; }
+int Matrix::GetCols() const { return cols_; }
 
 /* Добавить новые строки */
-void S21Matrix::SetRows(int rows) {
+void Matrix::SetRows(int rows) {
   if (rows != rows_ && rows >= 0) {
-    S21Matrix tmp(std::move(*this));
+    Matrix tmp(std::move(*this));
     MatrixСhange(tmp, rows, tmp.cols_);
   }
 }
 
 /* Добавить новые столбцы */
-void S21Matrix::SetCols(int cols) {
+void Matrix::SetCols(int cols) {
   if (cols != cols_ && cols >= 0) {
-    S21Matrix tmp(std::move(*this));
+    Matrix tmp(std::move(*this));
     MatrixСhange(tmp, tmp.rows_, cols);
   }
 }
 
-void S21Matrix::MatrixСhange(const S21Matrix& tmp, const int rows,
+void Matrix::MatrixСhange(const Matrix& tmp, const int rows,
                              const int cols) {
   rows_ = rows;
   cols_ = cols;
@@ -390,7 +390,7 @@ void S21Matrix::MatrixСhange(const S21Matrix& tmp, const int rows,
 }
 
 /* скопировать данные из матрицы в текущую матрицу*/
-void S21Matrix::CopyMatrix(const S21Matrix& tmp, const int rows,
+void Matrix::CopyMatrix(const Matrix& tmp, const int rows,
                            const int cols) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {

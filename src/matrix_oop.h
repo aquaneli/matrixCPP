@@ -6,37 +6,37 @@
 
 constexpr double EPS = 1e-7;
 
-class S21Matrix {
+class Matrix {
  public:
-  S21Matrix();
-  S21Matrix(const int rows, const int cols);
-  S21Matrix(const S21Matrix& other);
-  S21Matrix(S21Matrix&& other) noexcept;
-  ~S21Matrix();
+  Matrix();
+  Matrix(const int rows, const int cols);
+  Matrix(const Matrix& other);
+  Matrix(Matrix&& other) noexcept;
+  ~Matrix();
 
-  bool EqMatrix(const S21Matrix& other) const;
-  void SumMatrix(const S21Matrix& other);
-  void SubMatrix(const S21Matrix& other);
+  bool EqMatrix(const Matrix& other) const;
+  void SumMatrix(const Matrix& other);
+  void SubMatrix(const Matrix& other);
   void MulNumber(const double num);
-  void MulMatrix(const S21Matrix& other);
+  void MulMatrix(const Matrix& other);
 
-  S21Matrix Transpose() const;
-  S21Matrix CalcComplements() const;
+  Matrix Transpose() const;
+  Matrix CalcComplements() const;
   double Determinant() const;
-  S21Matrix InverseMatrix() const;
+  Matrix InverseMatrix() const;
 
-  S21Matrix operator+(const S21Matrix& other);
-  S21Matrix operator-(const S21Matrix& other);
-  S21Matrix operator*(const S21Matrix& other);
-  S21Matrix operator*(const double other);
-  friend S21Matrix operator*(const double other, S21Matrix& tmp);
-  bool operator==(const S21Matrix& other);
-  S21Matrix& operator=(const S21Matrix& other);
-  S21Matrix& operator=(S21Matrix&& other) noexcept;
-  S21Matrix& operator+=(const S21Matrix& other);
-  S21Matrix& operator-=(const S21Matrix& other);
-  S21Matrix& operator*=(const S21Matrix& other);
-  S21Matrix& operator*=(const double other);
+  Matrix operator+(const Matrix& other);
+  Matrix operator-(const Matrix& other);
+  Matrix operator*(const Matrix& other);
+  Matrix operator*(const double other);
+  friend Matrix operator*(const double other, Matrix& tmp);
+  bool operator==(const Matrix& other);
+  Matrix& operator=(const Matrix& other);
+  Matrix& operator=(Matrix&& other) noexcept;
+  Matrix& operator+=(const Matrix& other);
+  Matrix& operator-=(const Matrix& other);
+  Matrix& operator*=(const Matrix& other);
+  Matrix& operator*=(const double other);
   double& operator()(int i, int j);
   double operator()(int i, int j) const;
 
@@ -51,11 +51,11 @@ class S21Matrix {
 
   void CreateMatrix();
   void ClearMatrix();
-  void CopyMatrix(const S21Matrix& tmp, const int rows, const int cols);
+  void CopyMatrix(const Matrix& tmp, const int rows, const int cols);
   double MinorSearch(const int& i, const int& j) const;
-  S21Matrix MatrixDecr(const int& i, const int& j) const;
-  void SumSubFunc(const S21Matrix& other, const int code);
-  void MatrixСhange(const S21Matrix& tmp, const int rows, const int cols);
+  Matrix MatrixDecr(const int& i, const int& j) const;
+  void SumSubFunc(const Matrix& other, const int code);
+  void MatrixСhange(const Matrix& tmp, const int rows, const int cols);
 };
 
 #endif  // CPP_MATRIXPLUS_SRC_MATRIX_OOP_H_

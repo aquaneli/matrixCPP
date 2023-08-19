@@ -46,4 +46,5 @@ clean:
 	matrix_oop_tests.gcno \
 	matrix_oop.o \
 	run.dSYM \
+	run-* \
 	run
